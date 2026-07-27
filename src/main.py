@@ -1,10 +1,21 @@
-from image_downloader import main as image_downloader_main
-from image_processor import main as image_processor_main
+from image_processor import main as process_image
 
 
-def main() -> None:
-    image_processor_main()
+def main() -> None: 
+    bbox = (
+         31.1482,
+         -29.5482,
+         31.2075,
+         -29.5882
+    )
 
+    process_image(
+        bbox=bbox,
+        start_date="2023-01-01",
+        end_date="2023-01-30",
+        output_dir="output",
+        threshold=0.0,
+        )
 
 if __name__ == "__main__":
     main()

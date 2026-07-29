@@ -184,6 +184,8 @@ def extract_water(
 def plot_results(
     ndwi: np.ndarray,
     river_mask: np.ndarray,
+    start_date: str,
+    end_date: str,
 ) -> None:
     fig, (ax1, ax2) = plt.subplots(
         1,
@@ -194,12 +196,12 @@ def plot_results(
         ndwi,
         cmap="RdBu",
     )
-    ax1.set_title("NDWI")
+    ax1.set_title(f"NDWI {start_date}")
     ax2.imshow(
         river_mask,
         cmap="Blues",
     )
-    ax2.set_title("Extracted Water")
+    ax2.set_title(f"Extracted Water {end_date}")
     plt.tight_layout()
     plt.show()
 
@@ -236,8 +238,5 @@ def main(
         output_file=extracted_file,
         threshold=threshold,
     )
-    plot_results(
-        ndwi,
-        river_mask,
-    )
+    plot_results(ndwi, river_mask, start_date, end_date)
     print("Processing complete.")

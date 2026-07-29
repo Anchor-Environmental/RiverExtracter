@@ -1,29 +1,31 @@
 from __future__ import annotations
+
 from pathlib import Path
+
 import matplotlib.pyplot as plt
 import numpy as np
 import rasterio
 from rasterio.transform import from_bounds
-from config import CDSE_CLIENT_ID, CDSE_CLIENT_SECRET
 from sentinelhub import (
-    BBox,
     CRS,
-    SHConfig,
+    BBox,
     DataCollection,
-    SentinelHubRequest,
     MimeType,
     MosaickingOrder,
+    SentinelHubRequest,
+    SHConfig,
     bbox_to_dimensions,
 )
+
+from config import CDSE_CLIENT_ID, CDSE_CLIENT_SECRET
+
 # ------------------------------------------------------------------
 # Copernicus Data Space configuration
 # ------------------------------------------------------------------
 
 
 def get_config() -> SHConfig:
-    TOKEN_URL = (
-    "https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token"
-    )
+    TOKEN_URL = "https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token"
     BASE_URL = "https://sh.dataspace.copernicus.eu"
     """
     Reads credentials from environment variables.
@@ -35,15 +37,15 @@ def get_config() -> SHConfig:
     client_id = CDSE_CLIENT_ID
     client_secret = CDSE_CLIENT_SECRET
 
-    
     config.sh_client_id = client_id
     config.sh_client_secret = client_secret
     config.sh_base_url = BASE_URL
     config.sh_token_url = TOKEN_URL
 
     config.save("cdse_temp")
-    
+
     return SHConfig("cdse_temp")
+
 
 # ------------------------------------------------------------------
 # Sentinel download
@@ -54,7 +56,7 @@ def download_sentinel2(
     end_date: str,
     output_file: Path,
     resolution: int = 10,
-    max_cloud_cover: float = 0,
+    max_cloud_cover: float = 20,
 ) -> Path:
     """
     Download Sentinel-2 L2A imagery.
@@ -96,24 +98,20 @@ def download_sentinel2(
         evalscript=evalscript,
         input_data=[
             SentinelHubRequest.input_data(
-                data_collection=DataCollection.SENTINEL2_L2A.define_from("s212a_cdse", service_url=config.sh_base_url),
+                data_collection=DataCollection.SENTINEL2_L2A.define_from(
+                    "s212a_cdse", service_url=config.sh_base_url
+                ),
                 time_interval=(start_date, end_date),
                 mosaicking_order=MosaickingOrder.LEAST_CC,
                 maxcc=max_cloud_cover / 100.0,
             )
         ],
-        responses=[
-            SentinelHubRequest.output_response(
-                "default",
-                MimeType.TIFF
-            )
-        ],
+        responses=[SentinelHubRequest.output_response("default", MimeType.TIFF)],
         bbox=bbox_obj,
         size=(width, height),
         config=config,
     )
 
-    
     print("Downloading Sentinel-2 imagery...")
     data = request.get_data()
     if len(data) == 0:
@@ -143,6 +141,7 @@ def download_sentinel2(
         dst.write(np.moveaxis(image, -1, 0))
     print(f"Saved Sentinel image to: {output_file}")
     return output_file
+
 
 # ------------------------------------------------------------------
 # NDWI water extraction
@@ -178,6 +177,7 @@ def extract_water(
     print(f"Saved river mask to: {output_file}")
     return ndwi, river_mask
 
+
 # ------------------------------------------------------------------
 # Plotting
 # ------------------------------------------------------------------
@@ -202,6 +202,7 @@ def plot_results(
     ax2.set_title("Extracted Water")
     plt.tight_layout()
     plt.show()
+
 
 # ------------------------------------------------------------------
 # Public pipeline entry point

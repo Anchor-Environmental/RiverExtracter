@@ -12,6 +12,7 @@ from sentinelhub import (
     DataCollection,
     MimeType,
     MosaickingOrder,
+    SentinelHubCatalog,
     SentinelHubRequest,
     SHConfig,
     bbox_to_dimensions,
@@ -51,7 +52,7 @@ def get_config() -> SHConfig:
 # Sentinel download
 # ------------------------------------------------------------------
 def download_sentinel2(
-    bbox: tuple[float, float, float, float],
+    bbox: BBox,
     start_date: str,
     end_date: str,
     output_file: Path,
@@ -65,9 +66,8 @@ def download_sentinel2(
         Band 2 = B08 (NIR)
     """
     config = get_config()
-    bbox_obj = BBox(bbox=bbox, crs=CRS.WGS84)
     width, height = bbox_to_dimensions(
-        bbox_obj,
+        bbox,
         resolution=resolution,
     )
     evalscript = """
@@ -107,7 +107,7 @@ def download_sentinel2(
             )
         ],
         responses=[SentinelHubRequest.output_response("default", MimeType.TIFF)],
-        bbox=bbox_obj,
+        bbox=bbox,
         size=(width, height),
         config=config,
     )
@@ -207,6 +207,13 @@ def plot_results(
 
 
 # ------------------------------------------------------------------
+# Check avaliable imagery
+# ------------------------------------------------------------------
+def get_available_acquisitions():
+    pass
+
+
+# ------------------------------------------------------------------
 # Public pipeline entry point
 # ------------------------------------------------------------------
 def main(
@@ -225,8 +232,10 @@ def main(
     output_path.mkdir(parents=True, exist_ok=True)
     satellite_file = output_path / "satellite_image.tif"
     extracted_file = output_path / "extracted_river.tif"
+    bbox_obj = BBox(bbox=bbox, crs=CRS.WGS84)
+
     download_sentinel2(
-        bbox=bbox,
+        bbox=bbox_obj,
         start_date=start_date,
         end_date=end_date,
         output_file=satellite_file,

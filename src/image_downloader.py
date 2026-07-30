@@ -1,43 +1,11 @@
-from config import CDSE_CLIENT_ID, CDSE_CLIENT_SECRET, BASE_URL, TOKEN_URL
+from pathlib import Path
+
+import numpy as np
 import rasterio
 from rasterio.transform import from_bounds
-from pathlib import Path
-import numpy as np
-from sentinelhub import (
-    BBox,
-    CRS,
-    SHConfig,
-    DataCollection,
-    SentinelHubRequest,
-    MimeType,
-    MosaickingOrder,
-    bbox_to_dimensions,
-)
+from sentinelhub import (CRS, BBox, DataCollection, MimeType, MosaickingOrder,
+                         SentinelHubRequest, bbox_to_dimensions)
 
-def get_config() -> SHConfig:
-    TOKEN_URL = (
-    "https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token"
-    )
-    BASE_URL = "https://sh.dataspace.copernicus.eu"
-    """
-    Reads credentials from environment variables.
-    Required:
-        CDSE_CLIENT_ID
-        CDSE_CLIENT_SECRET
-    """
-    config = SHConfig()
-    client_id = CDSE_CLIENT_ID
-    client_secret = CDSE_CLIENT_SECRET
-
-    
-    config.sh_client_id = client_id
-    config.sh_client_secret = client_secret
-    config.sh_base_url = BASE_URL
-    config.sh_token_url = TOKEN_URL
-
-    config.save("cdse_temp")
-    
-    return SHConfig("cdse_temp")
 
 # ------------------------------------------------------------------
 # Sentinel download
@@ -154,4 +122,4 @@ def main(
         output_file=output_file,
         resolution=resolution,
         max_cloud_cover=max_cloud_cover,
-    )
+

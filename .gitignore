@@ -1,5 +1,5 @@
 /images
 /outputs
 /src/config.py
-output/extracted_river.tif
-output/satellite_image.tif
+/output/extracted_river.tif
+/output/satellite_image.tif

@@ -126,7 +126,7 @@ def main(
     resolution: int = 10,
     max_cloud_cover: float = 20.0,
 ) -> Path:
-    output_file = Path(output_dir) / f"sentinel_image_{start_date}_{end_date}.tif"
+    output_file = Path(output_dir) / f"sentinel_image_{start_date[0:9]}.tif"
 
     download_sentinel2(
         bbox=bbox,

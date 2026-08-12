@@ -1,10 +1,18 @@
+from datetime import datetime, timedelta
 from pathlib import Path
 
 import numpy as np
 import rasterio
 from rasterio.transform import from_bounds
-from sentinelhub import (CRS, BBox, DataCollection, MimeType, MosaickingOrder,
-                         SentinelHubRequest, bbox_to_dimensions)
+from sentinelhub import (
+    CRS,
+    BBox,
+    DataCollection,
+    MimeType,
+    MosaickingOrder,
+    SentinelHubRequest,
+    bbox_to_dimensions,
+)
 
 
 # ------------------------------------------------------------------
@@ -14,17 +22,18 @@ def download_sentinel2(
     bbox: tuple[float, float, float, float],
     start_date: str,
     end_date: str,
+    config,
     output_file: Path,
     resolution: int = 10,
-    max_cloud_cover: float = 0,
+    max_cloud_cover: float = 20,
 ) -> Path:
     """
     Download Sentinel-2 L2A imagery.
     Output GeoTIFF:
         Band 1 = B03 (Green)
         Band 2 = B08 (NIR)
+        band 3 = dataMask
     """
-    config = get_config()
     bbox_obj = BBox(bbox=bbox, crs=CRS.WGS84)
     width, height = bbox_to_dimensions(
         bbox_obj,
@@ -35,10 +44,10 @@ def download_sentinel2(
     function setup() {
         return {
             input: [{
-                bands: ["B03", "B08"]
+                bands: ["B03", "B08", "dataMask"]
             }],
             output: {
-                bands: 2,
+                bands: 3,
                 sampleType: "FLOAT32"
             }
         };
@@ -46,7 +55,8 @@ def download_sentinel2(
     function evaluatePixel(sample) {
         return [
             sample.B03,
-            sample.B08
+            sample.B08,
+            sample.dataMask
         ];
     }
     """
@@ -54,28 +64,28 @@ def download_sentinel2(
     print("Base URL:", config.sh_base_url)
     print("Collection URL:", DataCollection.SENTINEL2_L2A.service_url)
 
+    dt = datetime.fromisoformat(start_date.replace("Z", ""))
+
+    start = (dt - timedelta(minutes=1)).isoformat()
+    end = (dt + timedelta(minutes=1)).isoformat()
+
     request = SentinelHubRequest(
         evalscript=evalscript,
         input_data=[
             SentinelHubRequest.input_data(
-                data_collection=DataCollection.SENTINEL2_L2A.define_from("s212a_cdse", service_url=config.sh_base_url),
-                time_interval=(start_date, end_date),
-                mosaicking_order=MosaickingOrder.LEAST_CC,
+                data_collection=DataCollection.SENTINEL2_L2A.define_from(
+                    "s212a_cdse", service_url=config.sh_base_url
+                ),
+                time_interval=(start, end),
                 maxcc=max_cloud_cover / 100.0,
             )
         ],
-        responses=[
-            SentinelHubRequest.output_response(
-                "default",
-                MimeType.TIFF
-            )
-        ],
+        responses=[SentinelHubRequest.output_response("default", MimeType.TIFF)],
         bbox=bbox_obj,
         size=(width, height),
         config=config,
     )
 
-    
     print("Downloading Sentinel-2 imagery...")
     data = request.get_data()
     if len(data) == 0:
@@ -94,7 +104,7 @@ def download_sentinel2(
         "driver": "GTiff",
         "height": image.shape[0],
         "width": image.shape[1],
-        "count": 2,
+        "count": 3,
         "dtype": rasterio.float32,
         "crs": "EPSG:4326",
         "transform": transform,
@@ -106,20 +116,25 @@ def download_sentinel2(
     print(f"Saved Sentinel image to: {output_file}")
     return output_file
 
+
 def main(
     bbox: tuple[float, float, float, float],
     start_date: str,
     end_date: str,
-    output_dir: str = "output",
-    resolution: int = 5,
-    max_cloud_cover: float = 0.0,
-) -> None:
+    config,
+    output_dir: str = "downloads",
+    resolution: int = 10,
+    max_cloud_cover: float = 20.0,
+) -> Path:
     output_file = Path(output_dir) / f"sentinel_image_{start_date}_{end_date}.tif"
+
     download_sentinel2(
         bbox=bbox,
         start_date=start_date,
         end_date=end_date,
+        config=config,
         output_file=output_file,
         resolution=resolution,
         max_cloud_cover=max_cloud_cover,
-
+    )
+    return output_file

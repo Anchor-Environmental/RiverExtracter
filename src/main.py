@@ -9,10 +9,10 @@ from image_processor import main as process_images
 
 def main() -> None:
     bbox = (31.1482, -29.5482, 31.2075, -29.5882)
-    start_date = "2025-06-01"
-    end_date = "2025-06-30"
+    start_date = "2022-04-14"
+    end_date = "2022-04-15"
     max_cloud_cover = 20.0
-    processing_threshold = 0.0
+    processing_threshold = 0.01
     config = create_config()
 
     online_acquisitions = list_online_images(

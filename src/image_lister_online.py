@@ -1,13 +1,4 @@
-from sentinelhub import (
-    CRS,
-    BBox,
-    DataCollection,
-    MimeType,
-    MosaickingOrder,
-    SentinelHubCatalog,
-    SentinelHubRequest,
-    bbox_to_dimensions,
-)
+from sentinelhub import CRS, BBox, DataCollection, SentinelHubCatalog
 
 
 def get_available_acquisitions(

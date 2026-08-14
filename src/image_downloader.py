@@ -9,7 +9,6 @@ from sentinelhub import (
     BBox,
     DataCollection,
     MimeType,
-    MosaickingOrder,
     SentinelHubRequest,
     bbox_to_dimensions,
 )

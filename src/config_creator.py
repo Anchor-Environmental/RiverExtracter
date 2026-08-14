@@ -1,9 +1,5 @@
+from config import BASE_URL, CDSE_CLIENT_ID, CDSE_CLIENT_SECRET, TOKEN_URL
 from sentinelhub import SHConfig
-
-from config import CDSE_CLIENT_ID, CDSE_CLIENT_SECRET
-
-TOKEN_URL = "https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token"
-BASE_URL = "https://sh.dataspace.copernicus.eu"
 
 
 def create_config(client_id, client_secret, token_url, base_url) -> SHConfig:
@@ -14,13 +10,11 @@ def create_config(client_id, client_secret, token_url, base_url) -> SHConfig:
         CDSE_CLIENT_SECRET
     """
     config = SHConfig()
-    client_id = CDSE_CLIENT_ID
-    client_secret = CDSE_CLIENT_SECRET
 
     config.sh_client_id = client_id
     config.sh_client_secret = client_secret
-    config.sh_base_url = BASE_URL
-    config.sh_token_url = TOKEN_URL
+    config.sh_base_url = base_url
+    config.sh_token_url = token_url
 
     config.save("cdse_temp")
 

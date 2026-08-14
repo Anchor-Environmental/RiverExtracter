@@ -5,20 +5,6 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 import rasterio
-from rasterio.transform import from_bounds
-from sentinelhub import (
-    CRS,
-    BBox,
-    DataCollection,
-    MimeType,
-    MosaickingOrder,
-    SentinelHubCatalog,
-    SentinelHubRequest,
-    SHConfig,
-    bbox_to_dimensions,
-)
-
-from config import CDSE_CLIENT_ID, CDSE_CLIENT_SECRET
 
 
 # ------------------------------------------------------------------
@@ -78,7 +64,7 @@ def plot_results(
         river_mask,
         cmap="Blues",
     )
-    ax2.set_title(f"Extracted Water")
+    ax2.set_title(f"Extracted Water {filename}")
     plt.tight_layout()
     plt.show()
 

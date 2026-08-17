@@ -1,4 +1,5 @@
 import argparse
+import textwrap
 from collections.abc import Sequence
 
 from workflow import run_workflow
@@ -12,6 +13,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="RiverExtracter",
         description=("Download and process satellite imagery."),
+        formatter_class=argparse.RawTextHelpFormatter,
     )
 
     parser.add_argument(
@@ -20,45 +22,48 @@ def build_parser() -> argparse.ArgumentParser:
         type=float,
         metavar=("MIN_X", "MIN_Y", "MAX_X", "MAX_Y"),
         default=DEFAULT_BBOX,
-        help=("Bounding box coordinates in the order " "MIN_X MIN_Y MAX_X MAX_Y."),
+        help=textwrap.dedent(
+            "Bounding box coordinates in the order MIN_X MIN_Y MAX_X MAX_Y."
+            "\nNote that this is from the top left to bottom right of square."
+        ),
     )
 
     parser.add_argument(
         "--start-date",
         default="2022-04-14",
-        help="Start date in YYYY-MM-DD",
+        help=textwrap.dedent("Start date in YYYY-MM-DD"),
     )
 
     parser.add_argument(
         "--end-date",
         default="2022-04-15",
-        help="Start date in YYYY-MM-DD",
+        help=textwrap.dedent("End date in YYYY-MM-DD"),
     )
 
     parser.add_argument(
         "--max-cloud-cover",
         type=float,
         default=20.0,
-        help="Maximum permitted cloud cover - default: 20.0",
+        help=textwrap.dedent("Maximum permitted cloud cover - default: 20.0"),
     )
 
     parser.add_argument(
         "--processing-threshold",
         type=float,
         default=0.01,
-        help="NDWI Image processing threshold - default: 0.01",
+        help=textwrap.dedent("NDWI Image processing threshold - default: 0.01"),
     )
 
     parser.add_argument(
         "--download-dir",
         default="downloads",
-        help="Path to store downloaded images.",
+        help=textwrap.dedent("Path to store downloaded images."),
     )
 
     parser.add_argument(
         "--output-dir",
         default="output",
-        help="Path to store processed images.",
+        help=textwrap.dedent("Path to store processed images."),
     )
 
     return parser

@@ -24,8 +24,8 @@ def get_acquisition_date(acquisition: dict[str, Any]) -> str:
 
 def run_workflow(
     bbox=tuple[float, float, float, float],
-    start_date="2022-04-20",
-    end_date="2022-04-30",
+    start_date="2022-04-14",
+    end_date="2022-04-15",
     max_cloud_cover=20.0,
     processing_threshold=0.01,
     download_dir: str | Path = "downloads",

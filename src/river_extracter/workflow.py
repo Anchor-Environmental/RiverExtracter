@@ -68,6 +68,13 @@ def run_workflow(
 
         print(f"Downloading acquisition from {acquisition_datetime}.")
 
+        download_images(
+            bbox=bbox,
+            start_date=acquisition_datetime,
+            end_date=acquisition_datetime,
+            config=config,
+        )
+
     print("Downloading complete.")
 
     all_acquisitions = list_offline_images(download_dir)
@@ -82,7 +89,7 @@ def run_workflow(
             output_dir=output_dir,
             threshold=processing_threshold,
         )
-    print("Processing complete.")
+    print("Workflow complete.")
 
 
 if __name__ == "__main__":

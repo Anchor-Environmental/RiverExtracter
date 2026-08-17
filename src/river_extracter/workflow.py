@@ -7,29 +7,29 @@ from image_lister_offline import main as list_offline_images
 from image_lister_online import main as list_online_images
 from image_processor import main as process_images
 
-#(31.1482, -29.5482, 31.2075, -29.5882)
+# (31.1482, -29.5482, 31.2075, -29.5882)
+
 
 def get_acquisition_date(acquisition: dict[str, Any]) -> str:
     """Extract YYYY-MM-DD from a downloaded sentinel file.
     Currenlty uses the common text "sentinel_image_" from the downloading
     the image downloader module
-   """
-   try:
-       acquisition_datetime = acquisition["properties"]["datetime"]
-   except KeyError as exc:
-       raise ValueError(
-               "Acquisition does not contain properties.datetime."
-       ) from exc
-   return acquisition_datetime[:10]
+    """
+    try:
+        acquisition_datetime = acquisition["properties"]["datetime"]
+    except KeyError as exc:
+        raise ValueError("Acquisition does not contain properties.datetime.") from exc
+    return acquisition_datetime[:10]
+
 
 def run_workflow(
-    bbox = tuple[float, float, float, float], 
-    start_date = "2022-04-20",
-    end_date = "2022-04-30",
-    max_cloud_cover = 20.0,
-    processing_threshold = 0.01,
-    download_dir: str = | Path = "downloads",
-    output_dir: str = | Path = "output",
+    bbox=tuple[float, float, float, float],
+    start_date="2022-04-20",
+    end_date="2022-04-30",
+    max_cloud_cover=20.0,
+    processing_threshold=0.01,
+    download_dir: str | Path = "downloads",
+    output_dir: str | Path = "output",
 ) -> None:
     """Download sentinel imagery and process local aquisitions"""
 
@@ -57,7 +57,7 @@ def run_workflow(
     ]
 
     for acquisition in online_acquisitions:
-        
+
         acquisition_date = get_acquisition_date(acquisition)
 
         if acquisition_date in offline_dates:
@@ -67,9 +67,9 @@ def run_workflow(
         acquisition_datetime = acquisition["properties"]["datetime"]
 
         print(f"Downloading acquisition from {acquisition_datetime}.")
-    
+
     print("Downloading complete.")
-  
+
     all_acquisitions = list_offline_images(download_dir)
 
     for filename in all_acquisitions:
@@ -83,6 +83,7 @@ def run_workflow(
             threshold=processing_threshold,
         )
     print("Processing complete.")
+
 
 if __name__ == "__main__":
     main()

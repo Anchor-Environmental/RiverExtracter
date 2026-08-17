@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Any
 
 from config_creator import main as create_config
-from image_downloader import main as download_images
+from image_downloader import download_images
 from image_lister_offline import main as list_offline_images
 from image_lister_online import main as list_online_images
 from image_processor import main as process_images
@@ -70,9 +70,10 @@ def run_workflow(
 
         download_images(
             bbox=bbox,
-            start_date=acquisition_datetime,
-            end_date=acquisition_datetime,
+            acquisition_datetime=acquisition_datetime,
             config=config,
+            output_dir=download_dir,
+            max_cloud_cover=max_cloud_cover,
         )
 
     print("Downloading complete.")

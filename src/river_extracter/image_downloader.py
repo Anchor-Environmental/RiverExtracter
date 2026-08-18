@@ -167,7 +167,7 @@ def create_acquisition_window(
         normalised_datetime = normalised_datetime[:-1] + "+00:00"
 
     try:
-        acquisition_time = datetime.fromisoformat(normalized_datetime)
+        acquisition_time = datetime.fromisoformat(normalised_datetime)
     except ValueError as exc:
         raise ValueError(
             f"Datetime must be a valid ISO 8601 datetime but recieved {acquisition_datetime!r}"

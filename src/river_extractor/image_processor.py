@@ -275,7 +275,7 @@ def validate_raster(source: rasterio.io.DatasetReader) -> None:
 
     if source.count < required_band_count:
         raise ValueError(
-            f"The input raster has {soure.count} bands, less than the required band cound of {required_band_count}"
+            f"The input raster has {source.count} bands, less than the required band cound of {required_band_count}"
         )
 
     if source.width <= 0 or source.height <= 0:

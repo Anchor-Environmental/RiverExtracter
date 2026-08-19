@@ -2,7 +2,7 @@ import argparse
 import textwrap
 from collections.abc import Sequence
 
-from workflow import run_workflow
+from .workflow import run_workflow
 
 DEFAULT_BBOX = (31.1482, -29.5882, 31.2075, -29.5482)
 

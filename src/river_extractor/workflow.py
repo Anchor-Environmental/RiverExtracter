@@ -1,11 +1,11 @@
 from pathlib import Path
 from typing import Any
 
-from config_creator import create_config
-from image_downloader import download_images
-from image_lister_offline import list_offline_images
-from image_lister_online import list_online_images
-from image_processor import process_image
+from .config_creator import create_config
+from .image_downloader import download_images
+from .image_lister_offline import list_offline_images
+from .image_lister_online import list_online_images
+from .image_processor import process_image
 
 # (31.1482, -29.5882, 31.2075, -29.5482)
 

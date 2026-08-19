@@ -3,11 +3,11 @@ from typing import Any
 
 from config_creator import create_config
 from image_downloader import download_images
-from image_lister_offline import main as list_offline_images
-from image_lister_online import main as list_online_images
-from image_processor import main as process_images
+from image_lister_offline import list_offline_images
+from image_lister_online import list_online_images
+from image_processor import process_image
 
-# (31.1482, -29.5482, 31.2075, -29.5882)
+# (31.1482, -29.5882, 31.2075, -29.5482)
 
 
 def get_acquisition_date(acquisition: dict[str, Any]) -> str:
@@ -23,11 +23,11 @@ def get_acquisition_date(acquisition: dict[str, Any]) -> str:
 
 
 def run_workflow(
-    bbox=tuple[float, float, float, float],
-    start_date="2022-04-14",
-    end_date="2022-04-15",
-    max_cloud_cover=20.0,
-    processing_threshold=0.01,
+    bbox: tuple[float, float, float, float],
+    start_date: str,
+    end_date: str,
+    max_cloud_cover: float = 20.0,
+    processing_threshold: float = 0.01,
     download_dir: str | Path = "downloads",
     output_dir: str | Path = "output",
 ) -> None:
@@ -58,15 +58,14 @@ def run_workflow(
 
     for acquisition in online_acquisitions:
 
-        acquisition_date = get_acquisition_date(acquisition)
+        acquisition_datetime = acquisition["properties"]["datetime"]
+        acquisition_date = acquisition_datetime[:10]
 
         if acquisition_date in offline_dates:
             print(f"Skipping {acquisition_date}: already downloaded.")
             continue
 
-        acquisition_datetime = acquisition["properties"]["datetime"]
-
-        print(f"Downloading acquisition from {acquisition_datetime}.")
+        print(f"Downloading acquisition from {acquisition_date}.")
 
         download_images(
             bbox=bbox,
@@ -85,10 +84,11 @@ def run_workflow(
 
         print(f"Processing {input_path}.")
 
-        process_images(
+        process_image(
             input_file_path=input_path,
             output_dir=output_dir,
             threshold=processing_threshold,
+            show_plot=True,
         )
     print("Workflow complete.")
 

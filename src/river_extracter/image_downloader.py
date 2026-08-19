@@ -89,7 +89,7 @@ def download_images(
 
     acquisition_date = acquisition_datetime[:10]
     output_dir = Path(output_dir)
-    output_file = output_dir / f"sentinel_image_{acquisition_datetime}.tif"
+    output_file = output_dir / f"sentinel_image_{acquisition_date}.tif"
 
     image = request_sentinel2_image(
         bbox=bbox,
@@ -236,10 +236,10 @@ def validate_download_parameters(
 
     min_lon, min_lat, max_lon, max_lat = bbox
 
-    if abs(min_lon) >= abs(max_lon):
+    if min_lon >= max_lon:
         raise ValueError("Minimum longitude must be smaller than maximum longitude")
 
-    if abs(min_lat) >= abs(max_lat):
+    if min_lat >= max_lat:
         raise ValueError("Minimum latitude must be smaller than maximum latitude")
 
     if not -180 <= min_lon <= 180:

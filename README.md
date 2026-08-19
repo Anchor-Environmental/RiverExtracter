@@ -25,7 +25,7 @@ export CDSE_CLIENT_ID="your-client-id"
 export CDSE_CLIENT_SECRET="your-client-secret"
 ```
 
-To persist credentials on Unix type systems add them to ~/.zshrc on mac or 
+To persist credentials on Unix type systems add them to ~/.zshrc or similar terminal setup file 
 
 To persist credentials on Windows search for env in the start menu. Go to environment variables, click new by system variables and add CDSE_CLIENT_ID and CDSE_CLIENT_SECRET
 

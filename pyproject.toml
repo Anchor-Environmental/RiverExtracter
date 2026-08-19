@@ -1,0 +1,74 @@
+[build-system]
+requires = ["setuptools>77"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "river-extractor"
+version = "0.1.0"
+description = "Download Sentinel-2 imagery and extract water using NDWI."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+
+authors = [
+  {name = "Hrishabh Rajeev"}
+]
+
+keywords = [
+  "Sentinel-2",
+  "remote sensing",
+  "NDWI",
+  "Satellite imagery",
+  "GIS",
+  "Satellite image processing",
+  "Rasterio",
+]
+
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research/Engineering",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: GIS ",
+]
+
+dependencies = [
+  "matplotlib",
+  "numpy",
+  "rasterio",
+  "sentinelhub",
+]
+
+[project.optional-dependencies]
+dev = [
+  "build",
+  "pytest",
+  "pytest-cov",
+  "ruff",
+]
+
+[project.scripts]
+river-extractor = "river_extractor.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/Anchor-Environmental/RiverExtracter"
+Repository = "https://github.com/Anchor-Environmental/RiverExtracter"
+Issues = "https://github.com/Anchor-Environmental/RiverExtracter/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = [
+  "--strict-config",
+  "--strict-markers",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"

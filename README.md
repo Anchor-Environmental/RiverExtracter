@@ -32,7 +32,7 @@ To persist credentials on Windows search for env in the start menu. Go to enviro
 ## Installation from GitHub
 
 ```bash
-python -m pip install "https://github.com/Anchor-Environmental/RiverExtractor.git"
+python -m pip install "git+https://github.com/Anchor-Environmental/RiverExtractor.git"
 ```
 
 # Development installation

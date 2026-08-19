@@ -88,6 +88,6 @@ def run_workflow(
             input_file_path=input_path,
             output_dir=output_dir,
             threshold=processing_threshold,
-            show_plot=True,
+            show_plot=False,
         )
     print("Workflow complete.")

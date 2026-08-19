@@ -1,10 +1,6 @@
-from satellite_tool.downloader import download_image
-from satellite_tool.processor import process_array, process_raster
+from .image_processor import calculate_ndwi, process_image
 
 __all__ = [
-    "download_image",
-    "process_array",
-    "process_raster",
+    "calculate_ndwi",
+    "process_image",
 ]
-
-__version__ = "0.1.0"

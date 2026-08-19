@@ -11,7 +11,7 @@ def build_parser() -> argparse.ArgumentParser:
     """Create and configure the command line interface"""
 
     parser = argparse.ArgumentParser(
-        prog="RiverExtracter",
+        prog="RiverExtractor",
         description=("Download and process satellite imagery."),
         formatter_class=argparse.RawTextHelpFormatter,
     )
@@ -70,7 +70,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    """Run river extracter tool CLI"""
+    """Run river extractor tool CLI"""
 
     parser = build_parser()
     args = parser.parse_args(argv)

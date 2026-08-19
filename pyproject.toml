@@ -55,9 +55,9 @@ dev = [
 river-extractor = "river_extractor.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/Anchor-Environmental/RiverExtracter"
-Repository = "https://github.com/Anchor-Environmental/RiverExtracter"
-Issues = "https://github.com/Anchor-Environmental/RiverExtracter/issues"
+Homepage = "https://github.com/Anchor-Environmental/RiverExtractor"
+Repository = "https://github.com/Anchor-Environmental/RiverExtractor"
+Issues = "https://github.com/Anchor-Environmental/RiverExtractor/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]

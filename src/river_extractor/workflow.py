@@ -91,7 +91,3 @@ def run_workflow(
             show_plot=True,
         )
     print("Workflow complete.")
-
-
-if __name__ == "__main__":
-    main()

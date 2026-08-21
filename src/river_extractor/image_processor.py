@@ -293,7 +293,7 @@ def plot_results(
     )
 
     index_ax.set_title(f"method.upper(): {filename}")
-    index_ax_ax.set_axis_off()
+    index_ax.set_axis_off()
 
     figure.colorbar(
         index_image,
@@ -394,6 +394,6 @@ def validate_raster(
 
     if src.count < required_band_counts[method]:
         raise ValueError(
-            f"The {method.upper()} method requires {required_band_count}"
+            f"The {method.upper()} method requires {required_band_counts}"
             f"The input raster has {src.count} bands"
         )

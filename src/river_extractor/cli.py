@@ -55,6 +55,16 @@ def build_parser() -> argparse.ArgumentParser:
     )
 
     parser.add_argument(
+        "--method",
+        choices=[
+            "aweish",
+            "ndwi",
+        ],
+        default="aweish",
+        help=("Water extraction method" "Default: aweish"),
+    )
+
+    parser.add_argument(
         "--download-dir",
         default="downloads",
         help=textwrap.dedent("Path to store downloaded images."),
@@ -81,6 +91,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         end_date=args.end_date,
         max_cloud_cover=args.max_cloud_cover,
         processing_threshold=args.processing_threshold,
+        extraction_method=args.method,
         download_dir=args.download_dir,
         output_dir=args.output_dir,
     )

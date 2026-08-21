@@ -19,18 +19,21 @@ EVALSCRIPT = """
 function setup() {
     return {
         input: [{
-            bands: ["B03", "B08", "dataMask"]
+            bands: ["B02", "B03", "B08", "B11", "B12","dataMask"]
         }],
         output: {
-            bands: 3,
+            bands: 6,
             sampleType: "FLOAT32"
         }
     };
 }
 function evaluatePixel(sample) {
     return [
+        sample.B02,
         sample.B03,
         sample.B08,
+        sample.B11,
+        sample.B12,
         sample.dataMask
     ];
 }
@@ -50,9 +53,13 @@ def download_images(
 
     Bands contained in GeoTIFF:
 
-        Band 1 = B03 (Green)
-        Band 2 = B08 (NIR)
+        Band 1 = B02 (Blue)
+        Band 2 = B03 (Green)
+        Band 3 = B08 (NIR)
+        Band 4 = B11 (SWIR1)
+        Band 5 = B12 (SWIR2)
         band 3 = dataMask
+
 
     Parameters:
 
@@ -217,9 +224,12 @@ def write_geotiff(
     with rasterio.open(output_file, "w", **profile) as dst:
         dst.write(np.moveaxis(image, -1, 0))
 
-        dst.set_band_description(1, "B03 Green")
-        dst.set_band_description(2, "B08 NIR")
-        dst.set_band_description(3, "Data Mask")
+        dst.set_band_description(1, "B02 Blue")
+        dst.set_band_description(2, "B03 Green")
+        dst.set_band_description(3, "B08 NIR")
+        dst.set_band_description(4, "B11 SWIR1")
+        dst.set_band_description(5, "B12 SWIR2")
+        dst.set_band_description(6, "DataMask")
 
     return output_file
 
@@ -269,7 +279,7 @@ def validate_image(image: np.ndarray) -> None:
             f"Expected a 3-dimensional Sentinel array but recieved: {image.shape}"
         )
 
-    expected_band_count = 3
+    expected_band_count = 6
     actual_band_count = image.shape[-1]
 
     if expected_band_count != actual_band_count:

@@ -28,6 +28,7 @@ def run_workflow(
     end_date: str,
     max_cloud_cover: float = 20.0,
     processing_threshold: float = 0.01,
+    extraction_method: str = "aweish",
     download_dir: str | Path = "downloads",
     output_dir: str | Path = "output",
 ) -> None:
@@ -88,6 +89,7 @@ def run_workflow(
             input_file_path=input_path,
             output_dir=output_dir,
             threshold=processing_threshold,
+            method=extraction_method,
             show_plot=False,
         )
     print("Workflow complete.")

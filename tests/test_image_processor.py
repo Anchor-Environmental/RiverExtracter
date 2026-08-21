@@ -1,7 +1,39 @@
 import numpy as np
 import pytest
 
-from river_extractor.image_processor import calculate_ndwi, create_water_mask
+from river_extractor.image_processor import (
+    calculate_aweish,
+    calculate_ndwi,
+    create_water_mask,
+)
+
+
+def test_calculate_aweish():
+    blue = np.array([[0.1]], dtype=np.float32)
+    green = np.array([[0.2]], dtype=np.float32)
+    nir = np.array([[0.05]], dtype=np.float32)
+    swir1 = np.array([[0.03]], dtype=np.float32)
+    swir2 = np.array([[0.02]], dtype=np.float32)
+
+    result = calculate_aweish(
+        blue=blue,
+        green=green,
+        nir=nir,
+        swir1=swir1,
+        swir2=swir2,
+    )
+
+    expected = np.array(
+        [[0.1 + 2.5 * 0.2 - 1.5 * (0.05 + 0.03) - 0.25 * 0.02]],
+        dtype=np.float32,
+    )
+
+    np.testing.assert_allclose(
+        result,
+        expected,
+        rtol=1e-6,
+        atol=1e-7,
+    )
 
 
 def test_calculate_ndwi():

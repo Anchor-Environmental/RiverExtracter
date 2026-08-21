@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "river-extractor"
-version = "0.1.0"
+version = "0.2.0"
 description = "Download Sentinel-2 imagery and extract water using NDWI."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -19,6 +19,7 @@ keywords = [
   "Sentinel-2",
   "remote sensing",
   "NDWI",
+  "AWEIsh",
   "Satellite imagery",
   "GIS",
   "Satellite image processing",
